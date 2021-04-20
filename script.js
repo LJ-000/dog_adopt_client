@@ -3,9 +3,10 @@ const BASE_URL = "http://localhost:3000/dogs/"
 // Initial block
 //
 createNav()                                   // This should run first
-createDivContainer()
+createDivContainer()                          // default
 createHomePage()
 displayDogs()
+displayForm()
 
 // Create Navigation Bar including 'Home, Listing Dogs for Adoption, Preferences, etc.'
 function createNav() {
@@ -41,11 +42,99 @@ function createHomePage() {
 }
 
 //Reset Container after each navigation bar click
-function resetContainer () {
-document.querySelector("#container").innerHTML = ""
+function resetContainer() {
+    document.querySelector("#container").innerHTML = ""
 }
 
 // Load the List a Dog (Form)
+function displayForm() {
+    const liForm = document.querySelector("#ListADog4Adoption")
+    liForm.addEventListener('click', (event) => {
+        resetContainer()
+
+        // Create form below to contain
+        //  name, breed, age, image
+        // <form id="dog-form">
+        //     <div class="form-group">
+        //         <label for="dog-name">Name</label>
+        //         <input name="dogName" type="text" class="form-control" id="dog-name" placeholder="Enter a dog name" >
+        //     </div>
+        //     <div class="form-group">
+        //         <label for="dog-breed">Breed</label>
+        //         <input name="dogBreed" type="text" class="form-control" id="dog-breed" placeholder="Enter a dog breed" >
+        //     </div>
+        //     <div class="form-group">
+        //         <label for="dog-age">Age</label>
+        //         <input name="dogAge" type="text" class="form-control" id="dog-age" placeholder="Enter dog's age" >
+        //     </div>
+        //     <div class="form-group">
+        //         <label for="dog-img">Upload a Photo</label>
+        //         <input name="dogImg" type="text" class="form-control" id="dog-img" placeholder="Enter url of dog's photo" >
+        //     </div>
+        // </form>
+
+        // Create form
+        const formElem = document.createElement('form')
+        formElem.id = "dog-form"
+
+        // Create each form group
+        const formItems = ['name','breed','age','img']
+        formItems.forEach(element => {
+            // Create div wrapper
+            const newDiv = document.createElement('div')
+            newDiv.className = "form-group"
+            formElem.appendChild(newDiv)
+
+            // Create label and input
+            const upperCaseElem = element[0].toUpperCase()+element.slice(1,element.length)
+            const newLabel = document.createElement('label')
+            newLabel.for = `dog-${element}`
+            newLabel.innerText = upperCaseElem + ": "
+
+            const newInput = document.createElement('input')
+            newInput.name = `dog${upperCaseElem}`
+            newInput.className = "form-control"
+            newInput.id = `dog-${element}`
+            newInput.placeholder = `Enter dog ${element}`
+
+            // Append Label and Input
+            newDiv.append(newLabel, newInput)
+        })
+
+        // Append to container
+        document.getElementById('container').appendChild(formElem)
+
+        // Add Submit button
+        const newInput = document.createElement('input')
+        newInput.type = "submit"
+        formElem.appendChild(newInput)
+
+        // Add event listener for submit form 
+        formElem.addEventListener('submit', e => {
+            e.preventDefault()
+
+            // Post new dog to server, and don't need to reflect on DOM
+            // since displayDogs does that for us already
+            const postObj = {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    "name": e.target.children[0].children[1].value,
+                    "breed": e.target.children[1].children[1].value,
+                    "age": e.target.children[2].children[1].value,
+                    "image": e.target.children[3].children[1].value,
+                    "likes": false
+                })
+            }
+            fetch(BASE_URL, postObj)
+                .then(res => res.json())
+                .then(data => data)
+        })
+
+    })
+}
 
 // Load the My Preferences
 
