@@ -33,8 +33,11 @@ function createDivContainer() {
 
 // Load the Home Page
 function createHomePage() {
-    resetContainer()
-    document.getElementById('container').innerText = "Welcome to Dog Adoption"
+    const home = document.querySelector("#Home")
+    home.addEventListener('click', () => {
+        resetContainer()
+        document.getElementById('container').innerText = "Welcome to Dog Adoption"
+    })
 }
 
 //Reset Container after each navigation bar click
@@ -50,10 +53,9 @@ document.querySelector("#container").innerHTML = ""
 // Add event listener for View Adoptees 
 function displayDogs(){
     // debugger
-    resetContainer()
     const viewAdoptees = document.querySelector("#ViewAdoptees")
     viewAdoptees.addEventListener('click', () => {
-
+        resetContainer()
         fetch(BASE_URL)
             .then( (res) => res.json() )
             // .then (console.log("Hello"))
