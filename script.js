@@ -2,11 +2,10 @@ const BASE_URL = "http://localhost:3000/dogs/"
 
 // Initial block
 //
-createNav()                                             // This should run first
+createNav()                                   // This should run first
 createDivContainer()
-handleFetch()
-
 createHomePage()
+displayDogs()
 
 // Create Navigation Bar including 'Home, Listing Dogs for Adoption, Preferences, etc.'
 function createNav() {
@@ -40,7 +39,7 @@ function createHomePage() {
 
 //Reset Container after each navigation bar click
 function resetContainer () {
-document.querySelector("#container").innerHTML = " "
+document.querySelector("#container").innerHTML = ""
 }
 
 // Load the List a Dog (Form)
@@ -49,7 +48,9 @@ document.querySelector("#container").innerHTML = " "
 
 
 // Add event listener for View Adoptees 
-function handleFetch(){
+function displayDogs(){
+    // debugger
+    resetContainer()
     const viewAdoptees = document.querySelector("#ViewAdoptees")
     viewAdoptees.addEventListener('click', () => {
 
@@ -67,8 +68,10 @@ function renderAdoptees(dog){
     //Within larger div, aka "container" we are adding/appending dogProfile
     document.querySelector("#container").append(dogProfile)
     //Adding image
-    const dogImg = document.createElement('image')
+    const dogImg = document.createElement('img')
     dogImg.src = dog.image 
+    dogImg.style.width = "100px"
+    dogImg.style.height = "100px"
     dogProfile.append(dogImg)
 
     const dogInfo = ['name', 'breed', 'age']
