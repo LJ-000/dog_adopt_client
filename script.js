@@ -4,9 +4,9 @@ const BASE_URL = "http://localhost:3000/dogs/"
 //
 createNav()                                   // This should run first
 createDivContainer()                          // default
-createHomePage()
-displayDogs()
-displayForm()
+createHomePage()        // Page "link"
+displayDogs()           // Page "link"
+displayForm()           // Page "link"
 
 // Create Navigation Bar including 'Home, Listing Dogs for Adoption, Preferences, etc.'
 function createNav() {
