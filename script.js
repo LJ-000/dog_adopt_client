@@ -1,5 +1,4 @@
 const BASE_URL = "http://localhost:3000/dogs/"
-
 // Initial block
 //
 createNav()                                   // This should run first
@@ -8,23 +7,19 @@ createHomePage()        // Page "link"
 displayDogs()           // Page "link"
 displayForm()           // Page "link"
 displayPreferences()    // Page "link"
-
 // Create Navigation Bar including 'Home, Listing Dogs for Adoption, Preferences, etc.'
 function createNav() {
     const body = document.querySelector('body')
     const newUl = document.createElement('ul')
     body.appendChild(newUl)
-
     const navItems = ['Home','List A Dog 4 Adoption','View Adoptees', 'My Preferences']
     navItems.forEach(element => {
         const newLi = document.createElement('li')
         newLi.innerText = element
         newLi.id = element.replaceAll(' ','')
-       
         newUl.appendChild(newLi)
     })
 }
-
 // Create our primary container which will display web pages
 function createDivContainer() {
     const body = document.querySelector('body')
@@ -32,7 +27,6 @@ function createDivContainer() {
     newDiv.id = "container"
     body.appendChild(newDiv)
 }
-
 // Load the Home Page
 function createHomePage() {
     const home = document.querySelector("#Home")
@@ -41,18 +35,15 @@ function createHomePage() {
         document.getElementById('container').innerText = "Welcome to Dog Adoption"
     })
 }
-
 //Reset Container after each navigation bar click
 function resetContainer() {
     document.querySelectorAll('#container').forEach(elem => {elem.innerHTML = ""})
 }
-
 // Load the List a Dog (Form)
 function displayForm() {
     const liForm = document.querySelector("#ListADog4Adoption")
     liForm.addEventListener('click', (event) => {
         resetContainer()
-
         // Create form below to contain
         //  name, breed, age, image
         // <form id="dog-form">
@@ -73,11 +64,9 @@ function displayForm() {
         //         <input name="dogImg" type="text" class="form-control" id="dog-img" placeholder="Enter url of dog's photo" >
         //     </div>
         // </form>
-
         // Create form
         const formElem = document.createElement('form')
         formElem.id = "dog-form"
-
         // Create each form group
         const formItems = ['name','breed','age','img']
         formItems.forEach(element => {
@@ -85,35 +74,28 @@ function displayForm() {
             const newDiv = document.createElement('div')
             newDiv.className = "form-group"
             formElem.appendChild(newDiv)
-
             // Create label and input
             const upperCaseElem = element[0].toUpperCase()+element.slice(1,element.length)
             const newLabel = document.createElement('label')
             newLabel.for = `dog-${element}`
             newLabel.innerText = upperCaseElem + ": "
-
             const newInput = document.createElement('input')
             newInput.name = `dog${upperCaseElem}`
             newInput.className = "form-control"
             newInput.id = `dog-${element}`
             newInput.placeholder = `Enter dog ${element}`
-
             // Append Label and Input
             newDiv.append(newLabel, newInput)
         })
-
         // Append to container
         document.getElementById('container').appendChild(formElem)
-
         // Add Submit button
         const newInput = document.createElement('input')
         newInput.type = "submit"
         formElem.appendChild(newInput)
-
         // Add event listener for submit form 
         formElem.addEventListener('submit', e => {
             e.preventDefault()
-
             // Post new dog to server, and don't need to reflect on DOM
             // since displayDogs does that for us already
             const postObj = {
@@ -132,17 +114,14 @@ function displayForm() {
             fetch(BASE_URL, postObj)
                 .then(res => res.json())
                 .then(data => {
-
                     // add new P that says 'Submitted!
                     const newP = document.createElement('p')
                     newP.innerText = 'Submitted Dog 4 Adoption!'
                     document.getElementById('container').appendChild(newP)
                 })
         })
-
     })
 }
-
 // Load the My Preferences
 function displayPreferences() {
     const myPreferences = document.querySelector("#MyPreferences")
@@ -163,23 +142,19 @@ function displayPreferences() {
                 })
                 // Create Adopt me button
                 adoptMeButton(data,myDogs)
-
                 // If Adopt me button is clicked, remove dog
                 document.getElementById('adopt-me').addEventListener('submit', (event) => {
                     event.preventDefault()
                     // Remove dog
                     // convert Lucky to id
                     const adopteeName = event.target.children[1].value // this tells u which dog
-
                     const adopteeArray = [] // stores all possibilities in container
                     myDogs.forEach(elem => {
                         const str = document.getElementById(elem).children[1].innerText
                         // str.slice(6,str.length)
                         adopteeArray.push(str.slice(6,str.length))
-                        
                     })
-
-                    // Tell us which div contains the dog
+                    // Tell us which divider contains the dog
                     adopteeArray.forEach(elem => {
                         if(elem === adopteeName){
                             const indexID = adopteeArray.indexOf(elem)
@@ -197,13 +172,11 @@ function displayPreferences() {
             })
     })
 }
-
 function adoptMeButton(data,dogs) {
     // Button will have a select drop down of liked dogs
     // Submit button says "adopt me"
     // on Submit, remove dog from library
     // somehow match current iteration with dog profile button, need dog id in div or something else
-
     // Create drop down
     // <form id='adopt-me'>
     //     <label for="dogs">Choose a dog:</label>
@@ -215,32 +188,25 @@ function adoptMeButton(data,dogs) {
     //     <br><br>
     //     <input type="submit" value="Submit">
     // </form>
-
     // Div after container
     const newNewDiv = document.createElement('div')
     newNewDiv.id = "container"
     document.querySelector('body').appendChild(newNewDiv)
-
     // Form
     const adoptForm = document.createElement('form')
     adoptForm.id = "adopt-me"
     newNewDiv.appendChild(adoptForm)
-
     // Label
     const newLabel = document.createElement('label')
     newLabel.for = "dogs"
     newLabel.innerText = "Who would you like to adopt?"
-
     // Select
     const newSelect = document.createElement('select')
     newSelect.name = 'dogs'
     newSelect.id = 'select-dogs'
-
     // Breaker
     const newBreaker = document.createElement('br')
-
     adoptForm.append(newLabel, newSelect, newBreaker)
-
     // Options
     // Get all liked dogs names into array
     const dogNames = []
@@ -258,19 +224,15 @@ function adoptMeButton(data,dogs) {
         const newOption = document.createElement('option')
         newOption.value = element
         newOption.innerText = element
-
         // Append Option under Select
         document.getElementById('select-dogs').appendChild(newOption)
     })
-
     // Create Input
     const newInput = document.createElement('input')
     newInput.type = 'submit'
     newInput.value = 'Adopt Me!'
-
     adoptForm.append(newInput)
 }
-
 // Add event listener for View Adoptees 
 function displayDogs(){
     // debugger
@@ -283,7 +245,6 @@ function displayDogs(){
             .then( (dogData) => dogData.forEach(renderAdoptees) )
     })
 }
-
 // Load the View Adoption
 function renderAdoptees(dog){
     // debugger
@@ -297,10 +258,8 @@ function renderAdoptees(dog){
     dogImg.style.height = "100px"
     //creating a dataset property for reference in patch request 
     // saving just incase -- dogImg.dataset.index = dog.id 
-
     dogProfile.append(dogImg)
-    //createButton(dog)
-
+    createButton(dog)
     const dogInfo = ['name', 'breed', 'age','id']
     dogInfo.forEach (dogLi => {
         const anotherLi = document.createElement('li')
@@ -314,26 +273,30 @@ function renderAdoptees(dog){
     })
 } 
 
-//write a function that will add “<3” after 3rd li
+//write a function that will add "<3" after 3rd li
 function createButton(dogParam) {
-    // console.log(“heerroo”)
+    // console.log("heerroo")
     const heartButton = document.createElement('img')
-    heartButton.src = "../dog_adopt_backend/png-transparent-computer-icons-icon-design-like-button-heartshaped-love-heart-heartshaped-vector.png"
-    // heartButton.style.border = “#0000FF”
-    heartButton.style.width = "20px"
-    heartButton.style.height = "15px"
-
+    heartButton.src = "/Users/lauranielsen/Development/code/Phase1/Projects/dog_adopt_project/heart-fill.svg"
+    heartButton.style.color = "yellow"
     heartButton.dataset.index = dogParam.id 
-
+// debugger 
     document.querySelector("#container").append(heartButton)
-    
     //add click event that will change <3 to red & patches like from false to true in server then shows it on My Preferences
-    
     heartButton.addEventListener ("click", clickFunction) 
     function clickFunction (event) {
-        // debugger
         const dogId =  event.target.dataset.index
-
+        // debugger
+        //in fetch check to see if likes = true or false in database
+        //sets clickcount equal to even/odd
+        fetch(`http://localhost:3000/dogs/${dogId}`)
+            .then((r) => r.json())
+            .then((data) => {
+                data.likes === false? event.target.clickcount = 0 : event.target.clickcount = 1
+            })
+            event.target.dataset.clickcount +=1
+        if (event.target.dataset.clickcount %2 !==0) { heartButton.style.backgroundColor = "red";
+        // event.target.dataset.index = true;
         fetch(`http://localhost:3000/dogs/${dogId}`, {
         method: "PATCH",
         headers: {
@@ -342,11 +305,23 @@ function createButton(dogParam) {
         body: JSON.stringify({likes: true}),
         })
         .then((r) => r.json())
-        .then((data) => { 
-            
-            //document.body.style.background = "red";
-            
-
+        .then((data) => {
+         })
+    }
+        if (event.target.dataset.clickcount % 2 === 0) {
+            heartButton.style.color = "white";
+            // event.target.dataset.index = false;
+            // event.target.removeEventListener("click");
+        fetch(`http://localhost:3000/dogs/${dogId}`, {
+        method: "PATCH",
+        headers: {
+        "Content-Type": "application/json",
+        },
+        body: JSON.stringify({likes: false}),
         })
+        .then((r) => r.json())
+        .then((data) => {
+         })
     }
-    }
+}
+}
