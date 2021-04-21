@@ -131,7 +131,13 @@ function displayForm() {
             }
             fetch(BASE_URL, postObj)
                 .then(res => res.json())
-                .then(data => data)
+                .then(data => {
+
+                    // add new P that says 'Submitted!
+                    const newP = document.createElement('p')
+                    newP.innerText = 'Submitted Dog 4 Adoption!'
+                    document.getElementById('container').appendChild(newP)
+                })
         })
 
     })
