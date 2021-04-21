@@ -276,10 +276,9 @@ function renderAdoptees(dog){
 //write a function that will add "<3" after 3rd li
 function createButton(dogParam) {
     // console.log("heerroo")
-    const heartButton = document.createElement('img')
-    heartButton.src = "/Users/lauranielsen/Development/code/Phase1/Projects/dog_adopt_project/heart-fill.svg"
-    heartButton.style.color = "yellow"
-    heartButton.dataset.index = dogParam.id 
+    const heartButton = document.createElement('i')
+    // heartButton.src = "/Users/jameschen/Development/code/Mod1/project-javascript/dog_adopt_client/heart-fill.svg"
+    heartButton.className = 'bi bi-heart'
 // debugger 
     document.querySelector("#container").append(heartButton)
     //add click event that will change <3 to red & patches like from false to true in server then shows it on My Preferences
@@ -295,18 +294,21 @@ function createButton(dogParam) {
                 data.likes === false? event.target.clickcount = 0 : event.target.clickcount = 1
             })
             event.target.dataset.clickcount +=1
-        if (event.target.dataset.clickcount %2 !==0) { heartButton.style.backgroundColor = "red";
-        // event.target.dataset.index = true;
-        fetch(`http://localhost:3000/dogs/${dogId}`, {
-        method: "PATCH",
-        headers: {
-        "Content-Type": "application/json",
-        },
-        body: JSON.stringify({likes: true}),
-        })
-        .then((r) => r.json())
-        .then((data) => {
-         })
+        if (event.target.dataset.clickcount %2 !==0) { 
+            heartButton.style.color = "red";
+            heartButton.style.fill = 'red'
+            // event.target.dataset.index = true;
+            
+            fetch(`http://localhost:3000/dogs/${dogId}`, {
+            method: "PATCH",
+            headers: {
+            "Content-Type": "application/json",
+            },
+            body: JSON.stringify({likes: true}),
+            })
+            .then((r) => r.json())
+            .then((data) => {
+            })
     }
         if (event.target.dataset.clickcount % 2 === 0) {
             heartButton.style.color = "white";
