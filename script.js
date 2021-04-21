@@ -179,7 +179,7 @@ function displayPreferences() {
                         
                     })
 
-                    // Tell us which divider contains the dog
+                    // Tell us which div contains the dog
                     adopteeArray.forEach(elem => {
                         if(elem === adopteeName){
                             const indexID = adopteeArray.indexOf(elem)
