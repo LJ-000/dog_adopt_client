@@ -259,7 +259,6 @@ function renderAdoptees(dog){
     //creating a dataset property for reference in patch request 
     // saving just incase -- dogImg.dataset.index = dog.id 
     dogProfile.append(dogImg)
-    createButton(dog)
     const dogInfo = ['name', 'breed', 'age','id']
     dogInfo.forEach (dogLi => {
         const anotherLi = document.createElement('li')
@@ -271,21 +270,23 @@ function renderAdoptees(dog){
         }
         dogProfile.append(anotherLi)
     })
+    createButton(dog)
 } 
 
 //write a function that will add "<3" after 3rd li
 function createButton(dogParam) {
-    // console.log("heerroo")
+    // Create heart button
     const heartButton = document.createElement('i')
-    // heartButton.src = "/Users/jameschen/Development/code/Mod1/project-javascript/dog_adopt_client/heart-fill.svg"
     heartButton.className = 'bi bi-heart'
-// debugger 
-    document.querySelector("#container").append(heartButton)
+    heartButton.dataset.index = dogParam.id
+
+    document.getElementById(dogParam.id).append(heartButton)
+
     //add click event that will change <3 to red & patches like from false to true in server then shows it on My Preferences
     heartButton.addEventListener ("click", clickFunction) 
     function clickFunction (event) {
         const dogId =  event.target.dataset.index
-        // debugger
+        debugger
         //in fetch check to see if likes = true or false in database
         //sets clickcount equal to even/odd
         fetch(`http://localhost:3000/dogs/${dogId}`)
@@ -298,7 +299,7 @@ function createButton(dogParam) {
             heartButton.style.color = "red";
             heartButton.style.fill = 'red'
             // event.target.dataset.index = true;
-            
+
             fetch(`http://localhost:3000/dogs/${dogId}`, {
             method: "PATCH",
             headers: {
