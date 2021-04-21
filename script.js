@@ -7,6 +7,7 @@ createDivContainer()                          // default
 createHomePage()        // Page "link"
 displayDogs()           // Page "link"
 displayForm()           // Page "link"
+displayPreferences()    // Page "link"
 
 // Create Navigation Bar including 'Home, Listing Dogs for Adoption, Preferences, etc.'
 function createNav() {
@@ -43,7 +44,7 @@ function createHomePage() {
 
 //Reset Container after each navigation bar click
 function resetContainer() {
-    document.querySelector("#container").innerHTML = ""
+    document.querySelectorAll('#container').forEach(elem => {elem.innerHTML = ""})
 }
 
 // Load the List a Dog (Form)
@@ -137,7 +138,132 @@ function displayForm() {
 }
 
 // Load the My Preferences
+function displayPreferences() {
+    const myPreferences = document.querySelector("#MyPreferences")
+    myPreferences.addEventListener('click', (event) => {
+        resetContainer()
+        // Show dogs that have been liked
+        // I temporarily made Lucky's and Luna's like: true so we can have an example
+        fetch(BASE_URL)
+            .then(res => res.json())
+            .then(data => {
+                const myDogs = []
+                data.forEach(element => {
+                    if(element.likes === true) {
+                        // If dog is liked, display this dog
+                        renderAdoptees(element)
+                        myDogs.push(element.id)
+                    }
+                })
+                // Create Adopt me button
+                adoptMeButton(data,myDogs)
 
+                // If Adopt me button is clicked, remove dog
+                document.getElementById('adopt-me').addEventListener('submit', (event) => {
+                    event.preventDefault()
+                    // Remove dog
+                    // convert Lucky to id
+                    const adopteeName = event.target.children[1].value // this tells u which dog
+
+                    const adopteeArray = [] // stores all possibilities in container
+                    myDogs.forEach(elem => {
+                        const str = document.getElementById(elem).children[1].innerText
+                        // str.slice(6,str.length)
+                        adopteeArray.push(str.slice(6,str.length))
+                        
+                    })
+
+                    // Tell us which divider contains the dog
+                    adopteeArray.forEach(elem => {
+                        if(elem === adopteeName){
+                            const indexID = adopteeArray.indexOf(elem)
+                            const adopteeID = myDogs[indexID]
+                            debugger
+                            // remove dog with div id of 
+                            fetch(BASE_URL+adopteeID, {
+                                method: "DELETE",
+                            })
+                                .then(res => res.json())
+                                .then(console.log("Deleted: "+ adopteeName))
+                        }
+                    })
+                })
+            })
+    })
+}
+
+function adoptMeButton(data,dogs) {
+    // Button will have a select drop down of liked dogs
+    // Submit button says "adopt me"
+    // on Submit, remove dog from library
+    // somehow match current iteration with dog profile button, need dog id in div or something else
+
+    // Create drop down
+    // <form id='adopt-me'>
+    //     <label for="dogs">Choose a dog:</label>
+    //     <select name="dogs" id="dogs">
+    //         <option value="Lucy">Lucy</option>
+    //         <option value="Taco">Taco</option>
+    //         <option value="Waco">Waco</option>
+    //     </select>
+    //     <br><br>
+    //     <input type="submit" value="Submit">
+    // </form>
+
+    // Div after container
+    const newNewDiv = document.createElement('div')
+    newNewDiv.id = "container"
+    document.querySelector('body').appendChild(newNewDiv)
+
+    // Form
+    const adoptForm = document.createElement('form')
+    adoptForm.id = "adopt-me"
+    newNewDiv.appendChild(adoptForm)
+
+    // Label
+    const newLabel = document.createElement('label')
+    newLabel.for = "dogs"
+    newLabel.innerText = "Who would you like to adopt?"
+
+    // Select
+    const newSelect = document.createElement('select')
+    newSelect.name = 'dogs'
+    newSelect.id = 'select-dogs'
+
+    // Breaker
+    const newBreaker = document.createElement('br')
+
+    adoptForm.append(newLabel, newSelect, newBreaker)
+
+    // Options
+    // Get all liked dogs names into array
+    const dogNames = []
+    dogs.forEach(element => {
+        dogNames.push(data[element-1].name)
+    })
+    // Create all options
+    // Default Options
+    // const newOption = document.createElement('option')
+    // newOption.value = 'Please select'
+    // newOption.innerText = 'Please select'
+    // document.getElementById('select-dogs').appendChild(newOption)
+    // All liked dog Options
+    dogNames.forEach(element => {
+        const newOption = document.createElement('option')
+        newOption.value = element
+        newOption.innerText = element
+
+        // Append Option under Select
+        document.getElementById('select-dogs').appendChild(newOption)
+    })
+
+    // Create Input
+    const newInput = document.createElement('input')
+    newInput.type = 'submit'
+    newInput.value = 'Adopt Me!'
+
+    adoptForm.append(newInput)
+}
 
 // Add event listener for View Adoptees 
 function displayDogs(){
@@ -167,15 +293,19 @@ function renderAdoptees(dog){
     // saving just incase -- dogImg.dataset.index = dog.id 
 
     dogProfile.append(dogImg)
-    createButton(dog)
+    //createButton(dog)
 
-    const dogInfo = ['name', 'breed', 'age']
+    const dogInfo = ['name', 'breed', 'age','id']
     dogInfo.forEach (dogLi => {
         const anotherLi = document.createElement('li')
         anotherLi.innerText = dogLi + ": " + dog[dogLi]
-    
-           dogProfile.append(anotherLi)
-})
+        // // Hide id
+        if(dogLi === 'id'){
+            anotherLi.hidden = true
+            dogProfile.id = dog[dogLi]
+        }
+        dogProfile.append(anotherLi)
+    })
 } 
 
 //write a function that will add “<3” after 3rd li
@@ -206,7 +336,7 @@ function createButton(dogParam) {
         body: JSON.stringify({likes: true}),
         })
         .then((r) => r.json())
-        .then((data) => { ()
+        .then((data) => { 
             
             //document.body.style.background = "red";
             
