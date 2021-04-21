@@ -163,7 +163,11 @@ function renderAdoptees(dog){
     dogImg.src = dog.image 
     dogImg.style.width = "100px"
     dogImg.style.height = "100px"
+    //creating a dataset property for reference in patch request 
+    // saving just incase -- dogImg.dataset.index = dog.id 
+
     dogProfile.append(dogImg)
+    createButton(dog)
 
     const dogInfo = ['name', 'breed', 'age']
     dogInfo.forEach (dogLi => {
@@ -173,3 +177,40 @@ function renderAdoptees(dog){
            dogProfile.append(anotherLi)
 })
 } 
+
+//write a function that will add “<3” after 3rd li
+function createButton(dogParam) {
+    // console.log(“heerroo”)
+    const heartButton = document.createElement('img')
+    heartButton.src = "../dog_adopt_backend/png-transparent-computer-icons-icon-design-like-button-heartshaped-love-heart-heartshaped-vector.png"
+    // heartButton.style.border = “#0000FF”
+    heartButton.style.width = "20px"
+    heartButton.style.height = "15px"
+
+    heartButton.dataset.index = dogParam.id 
+
+    document.querySelector("#container").append(heartButton)
+    
+    //add click event that will change <3 to red & patches like from false to true in server then shows it on My Preferences
+    
+    heartButton.addEventListener ("click", clickFunction) 
+    function clickFunction (event) {
+        // debugger
+        const dogId =  event.target.dataset.index
+
+        fetch(`http://localhost:3000/dogs/${dogId}`, {
+        method: "PATCH",
+        headers: {
+        "Content-Type": "application/json",
+        },
+        body: JSON.stringify({likes: true}),
+        })
+        .then((r) => r.json())
+        .then((data) => { ()
+            
+            //document.body.style.background = "red";
+            
+
+        })
+    }
+    }
