@@ -73,7 +73,7 @@ function createHomePage() {
         // Add image
         const newImg = document.createElement('img')
         newImg.src = "https://media3.s-nbcnews.com/j/newscms/2020_32/3401973/senior-dog-food-kr-2x1-tease-200804_2a0cf418702af763dcc6507172e355b3.fit-2000w.jpg"
-        newImg.style = "height: 100%; width: 100%"
+        newImg.style = "height: 100%; width: auto"
 
         document.getElementById('container').append(leftDiv,rightDiv)
         leftDiv.append(newImg)
