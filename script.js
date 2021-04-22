@@ -299,7 +299,7 @@ function createButton(dogParam) {
         // In fetch check to see if likes = true or false in database
         // Sets clickcount equal to even/odd
         
-// ** This is what we needed to comment out. It was redundant? I guess
+// ** This is what we needed to comment out. It was redundant? I guess`     
 
         // fetch(BASE_URL+dogId)
         //     .then(res => res.json())
