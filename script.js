@@ -9,15 +9,23 @@ displayForm()           // Page "link"
 displayPreferences()    // Page "link"
 // Create Navigation Bar including 'Home, Listing Dogs for Adoption, Preferences, etc.'
 function createNav() {
+    // <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    //         <li></li>
+    //         <li></li>
+    //         <li></li>
+    //         <li></li>
+    // </nav>
     const body = document.querySelector('body')
-    const newUl = document.createElement('ul')
-    body.appendChild(newUl)
+    const newNav = document.createElement('nav')
+    newNav.className = "navbar navbar-expand-lg navbar-light bg-light"
+    body.appendChild(newNav)
     const navItems = ['Home','List A Dog 4 Adoption','View Adoptees', 'My Preferences']
     navItems.forEach(element => {
         const newLi = document.createElement('li')
         newLi.innerText = element
         newLi.id = element.replaceAll(' ','')
-        newUl.appendChild(newLi)
+        newLi.className = 'mx-auto'
+        newNav.appendChild(newLi)
     })
 }
 // Create our primary container which will display web pages
@@ -308,7 +316,6 @@ function createButton(dogParam) {
         //     })
     
         event.target.dataset.clickcount = +event.target.dataset.clickcount + 1
-        console.log(event.target.dataset.clickcount)
         if (+event.target.dataset.clickcount % 2 !== 0) { 
             heartButton.style.color = "red";
 
