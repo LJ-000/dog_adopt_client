@@ -294,15 +294,18 @@ function createButton(dogParam) {
     heartButton.addEventListener("click", clickFunction) 
     function clickFunction(event) {
         const dogId =  event.target.dataset.index
+        //debugger
 
         // In fetch check to see if likes = true or false in database
         // Sets clickcount equal to even/odd
         
-        fetch(BASE_URL+dogId)
-            .then(res => res.json())
-            .then(data => {
-                data.likes === false? event.target.dataset.clickcount = +0 : event.target.dataset.clickcount = +1
-            })
+// ** This is what we needed to comment out. It was redundant? I guess
+
+        // fetch(BASE_URL+dogId)
+        //     .then(res => res.json())
+        //     .then(data => {
+        //         data.likes === false? event.target.dataset.clickcount = +0 : event.target.dataset.clickcount = +1
+        //     })
     
         event.target.dataset.clickcount = +event.target.dataset.clickcount + 1
         console.log(event.target.dataset.clickcount)
