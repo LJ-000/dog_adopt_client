@@ -235,19 +235,16 @@ function adoptMeButton(data,dogs) {
 }
 // Add event listener for View Adoptees 
 function displayDogs(){
-    // debugger
     const viewAdoptees = document.querySelector("#ViewAdoptees")
     viewAdoptees.addEventListener('click', () => {
         resetContainer()
         fetch(BASE_URL)
-            .then( (res) => res.json() )
-            // .then (console.log("Hello"))
-            .then( (dogData) => dogData.forEach(renderAdoptees) )
+            .then(res => res.json())
+            .then(data => data.forEach(renderAdoptees))
     })
 }
 // Load the View Adoption
 function renderAdoptees(dog){
-    // debugger
     const dogProfile = document.createElement('div')
     //Within larger div, aka "container" we are adding/appending dogProfile
     document.querySelector("#container").append(dogProfile)
@@ -272,33 +269,45 @@ function renderAdoptees(dog){
     })
     createButton(dog)
 } 
-
-//write a function that will add "<3" after 3rd li
+// Write a function that will add "<3" after 3rd li
 function createButton(dogParam) {
     // Create heart button
     const heartButton = document.createElement('i')
     heartButton.className = 'bi bi-heart'
     heartButton.dataset.index = dogParam.id
 
+    // This section makes sure heart button reflects the database
+    // if dogParam.likes = false, make it black & set click count
+    if(dogParam.likes === false) {
+        heartButton.style.color = "black"
+        heartButton.dataset.clickcount = +0
+    }
+    // if dogParam.likes = true, make it red
+    if(dogParam.likes === true) {
+        heartButton.style.color = "red"
+        heartButton.dataset.clickcount = +1
+    }
+
     document.getElementById(dogParam.id).append(heartButton)
 
-    //add click event that will change <3 to red & patches like from false to true in server then shows it on My Preferences
-    heartButton.addEventListener ("click", clickFunction) 
-    function clickFunction (event) {
+    // Add click event that will change <3 to red & patches like from false to true in server then shows it on My Preferences
+    heartButton.addEventListener("click", clickFunction) 
+    function clickFunction(event) {
         const dogId =  event.target.dataset.index
-        debugger
-        //in fetch check to see if likes = true or false in database
-        //sets clickcount equal to even/odd
-        fetch(`http://localhost:3000/dogs/${dogId}`)
-            .then((r) => r.json())
-            .then((data) => {
-                data.likes === false? event.target.clickcount = 0 : event.target.clickcount = 1
+
+        // In fetch check to see if likes = true or false in database
+        // Sets clickcount equal to even/odd
+        
+        fetch(BASE_URL+dogId)
+            .then(res => res.json())
+            .then(data => {
+                data.likes === false? event.target.dataset.clickcount = +0 : event.target.dataset.clickcount = +1
             })
-            event.target.dataset.clickcount +=1
-        if (event.target.dataset.clickcount %2 !==0) { 
+    
+        event.target.dataset.clickcount = +event.target.dataset.clickcount + 1
+        console.log(event.target.dataset.clickcount)
+        if (+event.target.dataset.clickcount % 2 !== 0) { 
             heartButton.style.color = "red";
-            heartButton.style.fill = 'red'
-            // event.target.dataset.index = true;
 
             fetch(`http://localhost:3000/dogs/${dogId}`, {
             method: "PATCH",
@@ -307,24 +316,22 @@ function createButton(dogParam) {
             },
             body: JSON.stringify({likes: true}),
             })
-            .then((r) => r.json())
-            .then((data) => {
+            .then(res => res.json())
+            .then()
+        }
+
+        if (+event.target.dataset.clickcount % 2 === 0) {
+            heartButton.style.color = "black";
+            // event.target.removeEventListener("click", clickFunction);
+            fetch(`http://localhost:3000/dogs/${dogId}`, {
+                method: "PATCH",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({likes: false}),
             })
-    }
-        if (event.target.dataset.clickcount % 2 === 0) {
-            heartButton.style.color = "white";
-            // event.target.dataset.index = false;
-            // event.target.removeEventListener("click");
-        fetch(`http://localhost:3000/dogs/${dogId}`, {
-        method: "PATCH",
-        headers: {
-        "Content-Type": "application/json",
-        },
-        body: JSON.stringify({likes: false}),
-        })
-        .then((r) => r.json())
-        .then((data) => {
-         })
-    }
+                .then((r) => r.json())
+                .then()
+        }   
 }
 }
