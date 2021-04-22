@@ -82,6 +82,12 @@ function createHomePage() {
 }
 //Reset Container after each navigation bar click
 function resetContainer() {
+    // Reset changes made in Home Page (future self: pay attention to the my preferences page with two div's having id of container)
+    const container = document.getElementById('container')
+    container.className = ""
+    container.style = ""
+
+    // The original reset Container clean up line
     document.querySelectorAll('#container').forEach(elem => {elem.innerHTML = ""})
 }
 // Load the List a Dog (Form)
@@ -283,6 +289,7 @@ function displayDogs(){
     const viewAdoptees = document.querySelector("#ViewAdoptees")
     viewAdoptees.addEventListener('click', () => {
         resetContainer()
+        debugger
         fetch(BASE_URL)
             .then(res => res.json())
             .then(data => data.forEach(renderAdoptees))
