@@ -17,7 +17,8 @@ function createNav() {
     // </nav>
     const body = document.querySelector('body')
     const newNav = document.createElement('nav')
-    newNav.className = "navbar navbar-expand-lg navbar-light bg-light"
+    newNav.className = "navbar navbar-expand-lg navbar-light"
+    newNav.style = "background-color: #026670; color: #9FEDD7; width: 100vw"
     body.appendChild(newNav)
     const navItems = ['Home','List A Dog 4 Adoption','View Adoptees', 'My Preferences']
     navItems.forEach(element => {
@@ -25,6 +26,7 @@ function createNav() {
         newLi.innerText = element
         newLi.id = element.replaceAll(' ','')
         newLi.className = 'mx-auto'
+        // newLi.style.color = "white"
         newNav.appendChild(newLi)
     })
 }
@@ -33,6 +35,7 @@ function createDivContainer() {
     const body = document.querySelector('body')
     const newDiv = document.createElement('div')
     newDiv.id = "container"
+
     body.appendChild(newDiv)
 }
 // Load the Home Page
@@ -40,7 +43,41 @@ function createHomePage() {
     const home = document.querySelector("#Home")
     home.addEventListener('click', () => {
         resetContainer()
-        document.getElementById('container').innerText = "Welcome to Dog Adoption"
+
+        // Modify main Div Container
+        const container = document.getElementById('container')
+        container.className = "row align-items-center"
+        container.style = "height: 100vh; width: 100vw; background-color: #FCE181;"
+
+        // Left Div
+        const leftDiv = document.createElement('div')
+        leftDiv.className = "col" // border border-success
+        leftDiv.style = "height: 100vh; width: 45vw"
+        // Right Div
+        const rightDiv = document.createElement('div')
+        rightDiv.className = "col" // border border-primary
+        rightDiv.style = "height: 100vh; width: 50vw"
+        // Top Right Div
+        const topRightDiv = document.createElement('div')
+        topRightDiv.className = "text-center" // border border-danger
+        topRightDiv.style = "padding-top: 200px; font-size: 7em; color: white; width: 100%;"
+        topRightDiv.innerText = "Happy Pups"
+        // Horizontal Rule
+        const horizontalRule = document.createElement('hr')
+        // Bottom Right Div
+        const bottomRightDiv = document.createElement('div')
+        bottomRightDiv.className = "row text-center" // border border-danger
+        bottomRightDiv.innerText = "11 am - 4pm DC’s Baked Joint has selected Happy Pups as their April Rescue Partner! Join us this Saturday, April 24th, for Pupapalooza! A portion of this weekend’s sales will directly support Happy Pup in delivering the best care and happy homes for all of our dogs"
+        bottomRightDiv.style = "padding: 2em; color: #026670"
+
+        // Add image
+        const newImg = document.createElement('img')
+        newImg.src = "https://media3.s-nbcnews.com/j/newscms/2020_32/3401973/senior-dog-food-kr-2x1-tease-200804_2a0cf418702af763dcc6507172e355b3.fit-2000w.jpg"
+        newImg.style = "height: 100%; width: 100%"
+
+        document.getElementById('container').append(leftDiv,rightDiv)
+        leftDiv.append(newImg)
+        rightDiv.append(topRightDiv, horizontalRule, bottomRightDiv)
     })
 }
 //Reset Container after each navigation bar click
