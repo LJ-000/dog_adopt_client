@@ -299,7 +299,12 @@ function displayDogs(){
 function renderAdoptees(dog){
     const dogProfile = document.createElement('div')
     //Within larger div, aka "container" we are adding/appending dogProfile
-    document.querySelector("#container").append(dogProfile)
+    const dogContainer = document.getElementById("container")
+    dogContainer.append(dogProfile)
+    dogContainer.className = "row"
+    //creating class name for dog profile card to allow css commands 
+    dogProfile.className = "border border-white rounded col-sm"
+    dogProfile.style = "background-color: #026670; width: 33%; height: 33%;" 
     //Adding image
     const dogImg = document.createElement('img')
     dogImg.src = dog.image 
